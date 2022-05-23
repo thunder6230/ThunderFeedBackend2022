@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 
 namespace Backend.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class UserPostController : ControllerBase
@@ -19,6 +19,7 @@ public class UserPostController : ControllerBase
     }
 
     [HttpGet("getAll")]
+    [AllowAnonymous]
     public async Task<ActionResult<ICollection<UserPost>>> Get()
     {
         try
@@ -26,6 +27,7 @@ public class UserPostController : ControllerBase
             ICollection<UserPost> posts = await _context.UserPosts
                 .Include(post => post.User)
                 .Include(post => post.Comments)
+                .ThenInclude(c => c.Likes)
                 .Include(post => post.Likes)
                 .OrderByDescending(x => x.CreatedAt).ToListAsync();
             if (posts.Count == 0) return BadRequest("There are no Posts yet");
@@ -38,6 +40,7 @@ public class UserPostController : ControllerBase
     }
 
     [HttpGet("getPost/{id}")]
+    [AllowAnonymous]
     public async Task<ActionResult<UserPost>> Get(int id)
     {
         var userPost = await _context.UserPosts.Where(p => p.Id == id)
@@ -49,7 +52,6 @@ public class UserPostController : ControllerBase
         return Ok(userPost);
     }
 
-    [Authorize]
     [HttpPost("AddPost")]
     public async Task<ActionResult<UserPost>> Post([FromBody] AddPostModel request)
     {
@@ -64,9 +66,15 @@ public class UserPostController : ControllerBase
             _context.UserPosts.Add(userPost);
             await _context.SaveChangesAsync();
 
-            var newPost = user.UserPosts.First();
+            /*var newPost = user.UserPosts.First();
             newPost.User.UserPosts = new List<UserPost>();
-            newPost.User.PasswordHash = null;
+            newPost.User.PasswordHash = null;*/
+            var newPost = await _context.UserPosts.OrderByDescending(p => p.CreatedAt)
+                .Where(p => p.User.Id == request.UserId)
+                .Include(p => p.User)
+                .Include(p => p.Comments)
+                .Include(p => p.Likes)
+                .FirstOrDefaultAsync();
 
             return Ok(newPost);
 
@@ -78,31 +86,29 @@ public class UserPostController : ControllerBase
     }
 
     [HttpPut("UpdatePost")]
-    public async Task<ActionResult<UserPost>> UpdatePost([FromBody] UserPost request)
+    public async Task<ActionResult<UserPost>> UpdatePost([FromBody] UpdatePostRequest request)
     {
-        var dbUserPost = await _context.UserPosts.FindAsync(request.Id);
-        if (dbUserPost == null) return BadRequest("Post Not Found");
-        dbUserPost.UpdatedAt = DateTime.Now;
-        dbUserPost.Body = request.Body;
+        var dbComment = await _context.UserPosts.Where(p => p.Id == request.PostId).Include(p => p.User).FirstOrDefaultAsync();
+        if (dbComment == null) return BadRequest("Comment Not Found");
+        if (dbComment.User.Id != request.UserId) return BadRequest("You have no Permission to edit this Post");
+        dbComment.UpdatedAt = DateTime.Now;
+        dbComment.Body = request.Body;
         await _context.SaveChangesAsync();
-        return Ok(dbUserPost);
+        return Ok(dbComment.Body);
     }
-
+    
     [HttpDelete("DeletePost/{id}")]
     public async Task<ActionResult<UserPost>> Delete(int id)
     {
-        var dbUserPost = await _context.UserPosts.FindAsync(id);
+        var dbUserPost = await _context.UserPosts
+            .Where(p => p.Id == id)
+            .Include(p => p.Comments)
+            .Include(p => p.Likes)
+            .FirstAsync();
         if (dbUserPost == null) return BadRequest("Post Not Found");
-        _context.Remove(dbUserPost);
+        _context.UserPosts.Remove(dbUserPost);
         await _context.SaveChangesAsync();
-        return Ok(dbUserPost);
+        return Ok(dbUserPost.Id);
     }
 
-    [HttpGet("Post/{id}/Likes/")]
-    public async Task<ActionResult<List<Like>>> Likes(int id)
-    {
-        var dbUserPost = await _context.UserPosts.FindAsync(id);
-        if (dbUserPost == null) return BadRequest("Post Not Found");
-        return Ok(dbUserPost.Likes);
-    }
 }

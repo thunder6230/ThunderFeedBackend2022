@@ -32,6 +32,9 @@ namespace Backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -74,25 +77,6 @@ namespace Backend.Migrations
                     b.HasIndex("UserPostId");
 
                     b.ToTable("Likes");
-                });
-
-            modelBuilder.Entity("Backend.Models.LikeForPost", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserPostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserPostId");
-
-                    b.ToTable("LikeForPost");
                 });
 
             modelBuilder.Entity("Backend.Models.Picture", b =>
@@ -220,15 +204,6 @@ namespace Backend.Migrations
                     b.Navigation("UserPost");
                 });
 
-            modelBuilder.Entity("Backend.Models.LikeForPost", b =>
-                {
-                    b.HasOne("Backend.Models.UserPost", null)
-                        .WithMany("LikesForPosts")
-                        .HasForeignKey("UserPostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Backend.Models.Picture", b =>
                 {
                     b.HasOne("Backend.Models.UserPost", "UserPost")
@@ -268,8 +243,6 @@ namespace Backend.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
-
-                    b.Navigation("LikesForPosts");
                 });
 #pragma warning restore 612, 618
         }

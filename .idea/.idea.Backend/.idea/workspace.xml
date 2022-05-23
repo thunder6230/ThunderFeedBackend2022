@@ -7,8 +7,22 @@
     <projectFile profileName="WebBackend">Backend.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f445e06d-6462-44ae-8b7d-ac6f7c5c18ba" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="f445e06d-6462-44ae-8b7d-ac6f7c5c18ba" name="Changes" comment="JWT oath2 Auth&#10;Entity Framework&#10;Add Post&#10;Add/remove Post Like">
+      <change afterPath="$PROJECT_DIR$/Models/CommentLikeRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/UpdateCommentRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/UpdatePostRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/CommentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/CommentController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/LikeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/LikeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/UserPostController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/UserPostController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/AddCommentModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/AddCommentModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Comment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Comment.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ref/Backend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ref/Backend.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/staticwebassets.pack.sentinel" beforeDir="false" afterPath="$PROJECT_DIR$/obj/staticwebassets.pack.sentinel" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,23 +58,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.github.minasploit.migrationfacilitator.data_project": "Backend",
-    "com.github.minasploit.migrationfacilitator.startup_project": "Backend",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.github.minasploit.migrationfacilitator.data_project&quot;: &quot;Backend&quot;,
+    &quot;com.github.minasploit.migrationfacilitator.startup_project&quot;: &quot;Backend&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Backend">
     <configuration name="Backend" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Backend.csproj" />
@@ -114,8 +128,24 @@
       <workItem from="1651952299914" duration="25860000" />
       <workItem from="1652685692435" duration="2193000" />
       <workItem from="1652687928145" duration="10367000" />
-      <workItem from="1652768467514" duration="48577000" />
+      <workItem from="1652768467514" duration="57285000" />
+      <workItem from="1653240931077" duration="9801000" />
     </task>
+    <task id="LOCAL-00001" summary="first commit">
+      <created>1653108035761</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1653108035761</updated>
+    </task>
+    <task id="LOCAL-00002" summary="JWT oath2 Auth&#10;Entity Framework&#10;Add Post&#10;Add/remove Post Like">
+      <created>1653108232448</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1653108232448</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,6 +166,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="first commit" />
+    <MESSAGE value="JWT oath2 Auth&#10;Entity Framework&#10;Add Post&#10;Add/remove Post Like" />
+    <option name="LAST_COMMIT_MESSAGE" value="JWT oath2 Auth&#10;Entity Framework&#10;Add Post&#10;Add/remove Post Like" />
   </component>
   <component name="XPathView.XPathProjectComponent">
     <history />

@@ -61,32 +61,32 @@ public class LikeController : Controller
         // }
     }
     [HttpPost("AddComment")]
-    public async Task<ActionResult<UserPost>> AddCommentLike(int id)
+    public async Task<ActionResult<Like>> AddCommentLike(CommentLikeRequest request)
     {
-        var dbComment = await _context.Comments.FindAsync(id);
+        var dbComment = await _context.Comments.FindAsync(request.commentId);
         if (dbComment == null) return BadRequest("Comment Not found");
         
         //It will be changed to AuthUser
-        var userOfLike = await _context.Users.FindAsync(4);
+        var userOfLike = await _context.Users.FindAsync(request.userId);
         if (userOfLike == null) return BadRequest("User not Found");
-        try
+        Like newCommentLike = new Like();
+        newCommentLike.User = userOfLike;
+        newCommentLike.Comment = dbComment;
+        newCommentLike.CreatedAt = DateTime.Now;
+        _context.Likes.Add(newCommentLike);
+        await _context.SaveChangesAsync();
+        var like = await _context.Likes.Where(l => l.User.Id == request.userId && l.Comment.Id == request.commentId)
+            .FirstOrDefaultAsync();
+        return Ok(like);
+        /*try
         {
-            Like newCommentLike = new Like();
-            newCommentLike.User = userOfLike;
-            newCommentLike.Comment = dbComment;
-            newCommentLike.CreatedAt = DateTime.Now;
-            _context.Likes.Add(newCommentLike);
-            return Ok(new
-            {
-                newCommentLike.Id, newCommentLike.CreatedAt, 
-            });
 
         }
         
         catch
         {
             return BadRequest("Error at adding like to Post");
-        }
+        }*/
     }
 
     [HttpDelete("Delete/{id}")]

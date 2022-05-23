@@ -18,8 +18,14 @@ public class CommentController : Controller
         var posts = await _context.Comments.ToListAsync();
         return Ok(posts);
     }
-    [HttpPost("/Post/Comment/Add")]
-    public async Task<ActionResult<Comment>> AddPostComment(AddCommentModel request)
+    [HttpGet("Comment/Get/{id}")]
+    public async Task<ActionResult<Comment>> Get(int id)
+    {
+        var comment = await _context.Comments.FindAsync(id);
+        return Ok(comment);
+    }
+    [HttpPost("Comment/Post/Add")]
+    public async Task<ActionResult<Comment>> AddPostComment([FromBody] AddCommentModel request)
     {
         var post = await _context.UserPosts.FindAsync(request.PostId);
         if (post == null) return BadRequest("Post not Found");
@@ -44,5 +50,29 @@ public class CommentController : Controller
         {
             return BadRequest("Comment could not be created");
         }
+    }
+
+    [HttpDelete("/Comment/Delete/{id}")]
+
+    public async Task<ActionResult<Comment>> DeleteComment(int id)
+    {
+        var dbComment = await _context.Comments
+            .Where(c => c.Id == id)
+            .Include(c => c.Likes)
+            .FirstAsync();
+        _context.Comments.Remove(dbComment);
+        await _context.SaveChangesAsync();
+        return Ok(dbComment.Id);
+    }
+    [HttpPut("Comment/Update")]
+    public async Task<ActionResult<Comment>> UpdatePost([FromBody] UpdateCommentRequest request)
+    {
+        var dbComment = await _context.Comments.Where(c => c.Id == request.CommentId).Include(c => c.User).FirstOrDefaultAsync();
+        if (dbComment == null) return BadRequest("Comment Not Found");
+        if (dbComment.User.Id != request.UserId) return BadRequest("You have no Permission to edit this Comment");
+        dbComment.UpdatedAt = DateTime.Now;
+        dbComment.Body = request.Body;
+        await _context.SaveChangesAsync();
+        return Ok(dbComment.Body);
     }
 }
