@@ -7,21 +7,38 @@
     <projectFile profileName="WebBackend">Backend.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f445e06d-6462-44ae-8b7d-ac6f7c5c18ba" name="Changes" comment="JWT oath2 Auth&#10;Entity Framework&#10;Add Post&#10;Add/remove Post Like">
-      <change afterPath="$PROJECT_DIR$/Models/CommentLikeRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/UpdateCommentRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/UpdatePostRequest.cs" afterDir="false" />
+    <list default="true" id="f445e06d-6462-44ae-8b7d-ac6f7c5c18ba" name="Changes" comment="migrations">
+      <change afterPath="$PROJECT_DIR$/Controllers/ReplyController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Reply.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Requests/AddReplyModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Requests/ReplyLikeRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Requests/UpdateReplyRequest.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Backend.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/CommentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/CommentController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/LikeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/LikeController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/UserPostController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/UserPostController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DataContent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/DataContent.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/AddCommentModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/AddCommentModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/AddCommentModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/AddCommentModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/AddPostModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/AddPostModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/Comment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Comment.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CommentLikeRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/CommentLikeRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Like.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Like.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/PostLikeRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/PostLikeRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/UpdateCommentRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/UpdateCommentRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/UpdatePostRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/UpdatePostRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Backend.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Backend.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.AssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ref/Backend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ref/Backend.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/staticwebassets.pack.sentinel" beforeDir="false" afterPath="$PROJECT_DIR$/obj/staticwebassets.pack.sentinel" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -30,6 +47,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -43,6 +65,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9d4f4ac7db6d2c5d183ab2d92602280ed4349fd6e6a1b6313546b3d01fdab5/ServiceProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ee6357fa4439dfbf81f6bd4f5c45e653a7d7bd1a2e9cac99925b99438c6247a/HttpMethodAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Controllers/WeatherForecastController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Andrasko/Desktop/ThunderfeedDocker/Backend/Models/AddCommentModel.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/appsettings.json" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -129,7 +152,7 @@
       <workItem from="1652685692435" duration="2193000" />
       <workItem from="1652687928145" duration="10367000" />
       <workItem from="1652768467514" duration="57285000" />
-      <workItem from="1653240931077" duration="9801000" />
+      <workItem from="1653240931077" duration="21038000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1653108035761</created>
@@ -145,7 +168,21 @@
       <option name="project" value="LOCAL" />
       <updated>1653108232448</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Post and Comment Crud works">
+      <created>1653327267247</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1653327267247</updated>
+    </task>
+    <task id="LOCAL-00004" summary="migrations">
+      <created>1653327296154</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1653327296154</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,7 +205,9 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="first commit" />
     <MESSAGE value="JWT oath2 Auth&#10;Entity Framework&#10;Add Post&#10;Add/remove Post Like" />
-    <option name="LAST_COMMIT_MESSAGE" value="JWT oath2 Auth&#10;Entity Framework&#10;Add Post&#10;Add/remove Post Like" />
+    <MESSAGE value="Post and Comment Crud works" />
+    <MESSAGE value="migrations" />
+    <option name="LAST_COMMIT_MESSAGE" value="migrations" />
   </component>
   <component name="XPathView.XPathProjectComponent">
     <history />

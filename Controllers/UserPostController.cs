@@ -20,13 +20,19 @@ public class UserPostController : ControllerBase
 
     [HttpGet("getAll")]
     [AllowAnonymous]
-    public async Task<ActionResult<ICollection<UserPost>>> Get()
+    public async Task<ActionResult<ICollection<UserPost>>> GetAll()
     {
         try
         {
             ICollection<UserPost> posts = await _context.UserPosts
                 .Include(post => post.User)
                 .Include(post => post.Comments)
+                .ThenInclude(c => c.Likes)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Replies)
+                .ThenInclude(r => r.Likes)
+                .ThenInclude(l => l.User)
+                .Include(p => p.Comments)
                 .ThenInclude(c => c.Likes)
                 .Include(post => post.Likes)
                 .OrderByDescending(x => x.CreatedAt).ToListAsync();

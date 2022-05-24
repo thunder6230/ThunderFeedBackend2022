@@ -62,6 +62,9 @@ namespace Backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("ReplyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -71,6 +74,8 @@ namespace Backend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CommentId");
+
+                    b.HasIndex("ReplyId");
 
                     b.HasIndex("UserId");
 
@@ -97,6 +102,37 @@ namespace Backend.Migrations
                     b.HasIndex("UserPostId");
 
                     b.ToTable("Pictures");
+                });
+
+            modelBuilder.Entity("Backend.Models.Reply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
@@ -187,6 +223,10 @@ namespace Backend.Migrations
                         .WithMany("Likes")
                         .HasForeignKey("CommentId");
 
+                    b.HasOne("Backend.Models.Reply", "Reply")
+                        .WithMany("Likes")
+                        .HasForeignKey("ReplyId");
+
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany("Likes")
                         .HasForeignKey("UserId")
@@ -198,6 +238,8 @@ namespace Backend.Migrations
                         .HasForeignKey("UserPostId");
 
                     b.Navigation("Comment");
+
+                    b.Navigation("Reply");
 
                     b.Navigation("User");
 
@@ -215,6 +257,25 @@ namespace Backend.Migrations
                     b.Navigation("UserPost");
                 });
 
+            modelBuilder.Entity("Backend.Models.Reply", b =>
+                {
+                    b.HasOne("Backend.Models.Comment", "Comment")
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Backend.Models.UserPost", b =>
                 {
                     b.HasOne("Backend.Models.User", "User")
@@ -227,6 +288,13 @@ namespace Backend.Migrations
                 });
 
             modelBuilder.Entity("Backend.Models.Comment", b =>
+                {
+                    b.Navigation("Likes");
+
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("Backend.Models.Reply", b =>
                 {
                     b.Navigation("Likes");
                 });

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "g2889u3ualeGv0Gb8u0Z42o5Fs8DAjSRcynltyQtOzR3jas/5D91EB993zyFcqFxkhLZnque/itrVGl+DGJNkg==",
+  "dgSpecHash": "X+7bM7JzOyXUKdZY0uNmR/6XlH7Gz4WqiOGLYFIadhqkUnqViUkqi8C62pv1eRcBebxWOJI9FZphM1x7cEdofA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Andrasko\\Desktop\\ThunderfeedDocker\\Backend\\Backend.csproj",
   "expectedPackageFiles": [
@@ -43,7 +43,7 @@
     "C:\\Users\\Andrasko\\.nuget\\packages\\microsoft.identitymodel.protocols\\6.10.0\\microsoft.identitymodel.protocols.6.10.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\6.10.0\\microsoft.identitymodel.protocols.openidconnect.6.10.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.17.0\\microsoft.identitymodel.tokens.6.17.0.nupkg.sha512",
-    "C:\\Users\\Andrasko\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
+    "C:\\Users\\Andrasko\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
@@ -73,6 +73,7 @@
     "C:\\Users\\Andrasko\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\scrutor\\3.0.1\\scrutor.3.0.1.nupkg.sha512",
+    "C:\\Users\\Andrasko\\.nuget\\packages\\sixlabors.imagesharp\\2.1.1\\sixlabors.imagesharp.2.1.1.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\swashbuckle.aspnetcore\\6.0.1\\swashbuckle.aspnetcore.6.0.1.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\swashbuckle.aspnetcore.annotations\\5.0.0\\swashbuckle.aspnetcore.annotations.5.0.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\swashbuckle.aspnetcore.filters\\6.0.0\\swashbuckle.aspnetcore.filters.6.0.0.nupkg.sha512",
@@ -135,7 +136,7 @@
     "C:\\Users\\Andrasko\\.nuget\\packages\\system.security.permissions\\4.7.0\\system.security.permissions.4.7.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
-    "C:\\Users\\Andrasko\\.nuget\\packages\\system.text.encoding.codepages\\4.4.0\\system.text.encoding.codepages.4.4.0.nupkg.sha512",
+    "C:\\Users\\Andrasko\\.nuget\\packages\\system.text.encoding.codepages\\5.0.0\\system.text.encoding.codepages.5.0.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\system.text.encoding.extensions\\4.3.0\\system.text.encoding.extensions.4.3.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
     "C:\\Users\\Andrasko\\.nuget\\packages\\system.text.json\\6.0.0\\system.text.json.6.0.0.nupkg.sha512",

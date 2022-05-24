@@ -80,6 +80,10 @@
               "target": "Package",
               "version": "[1.1.2, )"
             },
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[2.1.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.0.1, )"
