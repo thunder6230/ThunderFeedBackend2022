@@ -8,5 +8,6 @@ public class Like
     public User User { get; set; }
     public UserPost? UserPost { get; set; }
     public Comment? Comment { get; set; }
+    public Reply? Reply { get; set; }
     public DateTime CreatedAt { get; set; }
 }

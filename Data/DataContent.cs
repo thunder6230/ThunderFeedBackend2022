@@ -11,4 +11,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Like> Likes { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Picture> Pictures { get; set; }
+    public DbSet<Reply> Replies { get; set; }
 }

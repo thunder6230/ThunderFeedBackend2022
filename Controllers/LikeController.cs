@@ -78,15 +78,25 @@ public class LikeController : Controller
         var like = await _context.Likes.Where(l => l.User.Id == request.userId && l.Comment.Id == request.commentId)
             .FirstOrDefaultAsync();
         return Ok(like);
-        /*try
-        {
-
-        }
+    }
+    [HttpPost("AddReply")]
+    public async Task<ActionResult<Like>> AddReplyLike(ReplyLikeRequest request)
+    {
+        var dbReply = await _context.Replies.FindAsync(request.replyId);
+        if (dbReply == null) return BadRequest("Reply Not found");
         
-        catch
-        {
-            return BadRequest("Error at adding like to Post");
-        }*/
+        //It will be changed to AuthUser
+        var userOfLike = await _context.Users.FindAsync(request.userId);
+        if (userOfLike == null) return BadRequest("User not Found");
+        Like newReplyLike = new Like();
+        newReplyLike.User = userOfLike;
+        newReplyLike.Reply = dbReply;
+        newReplyLike.CreatedAt = DateTime.Now;
+        _context.Likes.Add(newReplyLike);
+        await _context.SaveChangesAsync();
+        var like = await _context.Likes.Where(l => l.User.Id == request.userId && l.Reply.Id == request.replyId)
+            .FirstOrDefaultAsync();
+        return Ok(like);
     }
 
     [HttpDelete("Delete/{id}")]
