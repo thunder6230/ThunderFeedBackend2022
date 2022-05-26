@@ -7,37 +7,24 @@
     <projectFile profileName="WebBackend">Backend.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f445e06d-6462-44ae-8b7d-ac6f7c5c18ba" name="Changes" comment="migrations">
-      <change afterPath="$PROJECT_DIR$/Controllers/ReplyController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Reply.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Requests/AddReplyModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Requests/ReplyLikeRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Requests/UpdateReplyRequest.cs" afterDir="false" />
+    <list default="true" id="f445e06d-6462-44ae-8b7d-ac6f7c5c18ba" name="Changes" comment="DB migrations for replies">
+      <change afterPath="$PROJECT_DIR$/Controllers/PictureController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/ValidationError.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Backend.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/CommentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/CommentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/LikeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/LikeController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/UserPostController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/UserPostController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/DataContent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Data/DataContent.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/AddCommentModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/AddCommentModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/AddPostModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/AddPostModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Comment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Comment.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/CommentLikeRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/CommentLikeRequest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Like.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Like.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/PostLikeRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/PostLikeRequest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/UpdateCommentRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/UpdateCommentRequest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/UpdatePostRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/UpdatePostRequest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Backend.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Backend.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Picture.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Picture.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Requests/AddPostModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Requests/AddPostModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/UserPost.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/UserPost.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.AssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ref/Backend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ref/Backend.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/staticwebassets.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/staticwebassets.build.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/staticwebassets.pack.sentinel" beforeDir="false" afterPath="$PROJECT_DIR$/obj/staticwebassets.pack.sentinel" afterDir="false" />
     </list>
@@ -47,22 +34,21 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="master" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0bfed36a26cb425481defbb8d9a6bcb831a00/09/c6b8d16e/MySQLDbContextOptionsExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/27998a8942264ac1b2e8d07155bec4f51cb898/0c/5b6e9066/ActionResult`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35780c5789724b8da2615a9a8eae937e238600/60/6fdeb2b4/OutputStreamPacket.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/63fe8842705d4b08b27c605a0e636ef48a00/de/4793ea91/SecurityRequirementsOperationFilter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d41bb1eefbfe4a62aa35afcbb17fdd7c55498/9a/df1d019e/Authorization.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/22ecaee444ea579d35fbedacd8165d1923a96143d4f5353524c6a192206b2dd7/HttpGetAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/37a954845b52703c5cce1aacf8fa1292378878e82bf68c4c4b5effc447316e9/IdentityUser.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/575c31ecc35a636b6f962cb71d53992552941a18982aae1c8e6c16305cc3761b/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/664ec06dfe9e907a2e8e36384a8df7f162a6ff658fe1c344c172d92a15e134df/PhysicalFileProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9d4f4ac7db6d2c5d183ab2d92602280ed4349fd6e6a1b6313546b3d01fdab5/ServiceProvider.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c02e3394dfc620b8d15f2a5eb5f13e10f5cdc5c5f4daec1ba53c86bd7ec85ba2/WebpEncoder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e7821e728ca685b97e8a1f8b28162c23268160f93444e3abc3b5dffdaf7b/PathString.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ee6357fa4439dfbf81f6bd4f5c45e653a7d7bd1a2e9cac99925b99438c6247a/HttpMethodAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Controllers/WeatherForecastController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Andrasko/Desktop/ThunderfeedDocker/Backend/Models/AddCommentModel.cs" root0="SKIP_HIGHLIGHTING" />
@@ -81,23 +67,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.github.minasploit.migrationfacilitator.data_project&quot;: &quot;Backend&quot;,
-    &quot;com.github.minasploit.migrationfacilitator.startup_project&quot;: &quot;Backend&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.github.minasploit.migrationfacilitator.data_project": "Backend",
+    "com.github.minasploit.migrationfacilitator.startup_project": "Backend",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Backend">
     <configuration name="Backend" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Backend.csproj" />
