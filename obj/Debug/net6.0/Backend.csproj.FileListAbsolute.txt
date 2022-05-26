@@ -72,3 +72,5 @@ C:\Users\Andrasko\Desktop\ThunderfeedDocker\Backend\bin\Debug\net6.0\Swashbuckle
 C:\Users\Andrasko\Desktop\ThunderfeedDocker\Backend\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\Andrasko\Desktop\ThunderfeedDocker\Backend\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Andrasko\Desktop\ThunderfeedDocker\Backend\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\Andrasko\Desktop\ThunderfeedDocker\Backend\bin\Debug\net6.0\SixLabors.ImageSharp.dll
+C:\Users\Andrasko\Desktop\ThunderfeedDocker\Backend\bin\Debug\net6.0\Backend.staticwebassets.runtime.json

@@ -16,6 +16,7 @@ public class User
     public byte[]? RememberMe { get; set; }
     public ICollection<UserPost> UserPosts { get; set; }
     public ICollection<Like> Likes { get; set; }
+    public ICollection<Picture> Pictures { get; set; }
 
     public string Gender { get; set; } = string.Empty;
     
