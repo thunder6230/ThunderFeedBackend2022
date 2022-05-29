@@ -25,25 +25,50 @@ public class CommentController : Controller
         return Ok(comment);
     }
     [HttpPost("Comment/Post/Add")]
-    public async Task<ActionResult<Comment>> AddPostComment([FromBody] AddCommentModel request)
+    public async Task<ActionResult<Comment>> AddPostComment(IFormCollection formCollection)
     {
-        var post = await _context.UserPosts.FindAsync(request.PostId);
+        List<Picture> Pictures = new List<Picture>();
+        if (formCollection.Files.Count != 0)
+        {
+            var sizeErrors = ValidateFileSize(formCollection.Files);
+            if (sizeErrors.Count > 0) return BadRequest(sizeErrors);
+            var extensionErrors = ValidateFileExtension(formCollection.Files);
+            if (extensionErrors.Count > 0) return BadRequest(extensionErrors);
+
+            // using var image = Image.Load(.File);
+            // return Ok(new { image.Height, image.Width });
+        }
+        var userId = int.Parse(formCollection["UserId"]);
+        var postId = int.Parse(formCollection["PostId"]);
+        var body = formCollection["Body"];
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null) return BadRequest("User Not Found");
+        var post = await _context.UserPosts.FindAsync(postId);
         if (post == null) return BadRequest("Post not Found");
         //It will be changed to AuthUser
-        var userOfComment = await _context.Users.FindAsync(request.UserId);
+        var userOfComment = await _context.Users.FindAsync(userId);
         if (userOfComment == null) return BadRequest("User not Found");
         try
         {
             var comment = new Comment();
-            comment.Body = request.Body;
+            comment.Body = body;
             comment.User = userOfComment;
             comment.CreatedAt = DateTime.Now;
             comment.UserPost = post;
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
-            var newComment = _context.Comments
-                .Where(c => c.User.Id == request.UserId && c.UserPost.Id == request.PostId )
-                .Include(C => C.Likes);
+            var newComment = await _context.Comments.OrderByDescending(c => c.CreatedAt)
+                .Where(c => c.User.Id == userId)
+                .Include(c => c.User)
+                .Include(c => c.Replies)
+                .Include(c => c.Likes)
+                .Include(c => c.Pictures)
+                .FirstOrDefaultAsync();
+            if (newComment == null) return BadRequest("Post could not be created");
+            Pictures = await SaveImages(formCollection.Files, user, newComment);
+            
+            newComment.Pictures = Pictures;
+            
             return Ok(newComment);
         }
         catch
@@ -76,6 +101,99 @@ public class CommentController : Controller
         return Ok(dbComment.Body);
     }
     
-    
+    private List<ValidationError> ValidateFileExtension(IFormFileCollection fileCollection)
+    {
+        var supportedTypes = new[] { "jpg", "bmp", "png", "jpeg" };
+        List<ValidationError> ValidationErrors = new List<ValidationError>();
+        foreach (var file in fileCollection)
+        {
+            var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1).ToLower();
+            var fileName = file.FileName;
+            var errorMessage = "File Extension Is InValid - Only Upload jpg/jpeg/bmp/png File";
+            if (!supportedTypes.Contains(fileExt))
+            {
+                var validationError = new ValidationError();
+                validationError.FileName = fileName;
+                validationError.ErrorMessage = errorMessage;
+                ValidationErrors.Add(validationError);
+            }
+        }
+
+        return ValidationErrors;
+    }
+
+    private List<ValidationError> ValidateFileSize(IFormFileCollection fileCollection)
+    {
+        var maxAllowedSize = 2621440;
+        List<ValidationError> ValidationErrors = new List<ValidationError>();
+        foreach (var file in fileCollection)
+        {
+            var fileExt = Path.GetExtension(file.FileName).Substring(1).ToLower();
+            var fileName = file.FileName;
+            var errorMessage = "File Size Is InValid - Max Upload Size is 2,5mb";
+            if (file.Length > maxAllowedSize)
+            {
+                var validationError = new ValidationError();
+                validationError.FileName = fileName;
+                validationError.ErrorMessage = errorMessage;
+                ValidationErrors.Add(validationError);
+            }
+        }
+
+        return ValidationErrors;
+    }
+
+    private async Task<List<Picture>> SaveImages(IFormFileCollection fileCollection, User user, Comment comment)
+    {
+        List<Picture> pictures = new List<Picture>();
+        foreach (var file in fileCollection)
+        {
+            string uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+            if (!Directory.Exists(uploadDirectory))
+            {
+                Directory.CreateDirectory(uploadDirectory);
+            }
+            string fileName = file.FileName;
+            string extension = Path.GetExtension(fileName);
+            string hashedFilename = Guid.NewGuid() + extension;
+            string imagePath = Path.Combine(uploadDirectory, hashedFilename);
+            await using var stream = new FileStream(imagePath, FileMode.Create);
+
+            await file.CopyToAsync(stream);
+            stream.Flush();
+
+            string url = "Uploads/" + hashedFilename;
+            Picture picture = new Picture();
+            picture.User = user;
+            picture.FileName = hashedFilename;
+            picture.ImgPath = url;
+            picture.Comment = comment;
+            pictures.Add(picture);
+            _context.Pictures.Add(picture);
+
+
+            /*using (var image = Image.Load(imagePath))
+            {
+                var height = image.Height;
+                var width = image.Width;
+                if (width > 1920)
+                {
+                    var newWidth = 1920;
+                    var newHeight = 0;
+                    image.Mutate(c => c.Resize(newWidth, newHeight));
+                }
+                
+                string webPFileName = Guid.NewGuid().ToString() + ".webp";
+
+                image.Save(new FileStream(webPFileName, FileMode.Create), new WebpEncoder());
+                
+            }*/
+
+        }
+
+        await _context.SaveChangesAsync();
+        var dbPictures = await _context.Pictures.Where(p => p.Comment.Id == comment.Id).ToListAsync();
+        return dbPictures;
+    }
 
 }

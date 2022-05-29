@@ -33,14 +33,15 @@ public class UserPostController : ControllerBase
         {
             ICollection<UserPost> posts = await _context.UserPosts
                 .Include(post => post.User)
-                .Include(post => post.Comments)
-                .ThenInclude(c => c.Likes)
+                .Include(post => post.Comments).ThenInclude(c => c.Likes)
+                .Include(post => post.Comments).ThenInclude(c => c.Pictures)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.Replies)
                 .ThenInclude(r => r.Likes)
                 .ThenInclude(l => l.User)
-                .Include(p => p.Comments)
-                .ThenInclude(c => c.Likes)
+                
+                .Include(p => p.Comments).ThenInclude(c => c.User)
+                .Include(p => p.Comments).ThenInclude(c => c.Likes)
                 .Include(post => post.Likes)
                 .Include(post => post.Pictures)
                 .OrderByDescending(x => x.CreatedAt).ToListAsync();

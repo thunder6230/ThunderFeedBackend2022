@@ -50,26 +50,28 @@ public class AuthController : Controller
         user.Gender = request.Gender;
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+        var newUser = await _context.Users.Where(user => user.Email.ToLower() == request.Email.ToLower()).FirstOrDefaultAsync();
+        if (newUser == null) return BadRequest("Something went wrong");
         return Ok("User has been successfully created");
     }
 
     [HttpPost("Login")]
     public async Task<ActionResult<User>> Login(LoginModel request)
     {
-        var user = await _context.Users.SingleOrDefaultAsync(user => user.Email.ToLower() == request.Email.ToLower());
+        var user = await _context.Users.FirstAsync(user => user.Email.ToLower() == request.Email.ToLower());
         if (user == null) return BadRequest("User Not Found");
         CreatePasswordHash(request.Password, out byte[] passwordHash);
         if (passwordHash.ToString() != user.PasswordHash.ToString()) return BadRequest("Password is incorrect");
-        string token = CreateToken(user);
+        string token = CreateToken(user, request.RememberMe);
         return Ok(token);
     }
 
-    private string CreateToken(User user)
+    private string CreateToken(User user, bool rememberMe)
     {
         List<Claim> claims = new List<Claim>();
         claims.Add(new Claim(ClaimTypes.Name, user.Email));
         claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-        var token = GetToken(claims);
+        var token = GetToken(claims, rememberMe);
         string jwt = new JwtSecurityTokenHandler().WriteToken(token);
         return jwt;
     }
@@ -80,14 +82,14 @@ public class AuthController : Controller
         passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
     }
     
-    private JwtSecurityToken GetToken(List<Claim> authClaims)
+    private JwtSecurityToken GetToken(List<Claim> authClaims, bool rememberMe)
     {
         var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
+        var expireDate = rememberMe ? DateTime.Now.AddMonths(6) : DateTime.Now.AddHours(1);
         var token = new JwtSecurityToken(
             issuer: _configuration["JWT:ValidIssuer"],
             audience: _configuration["JWT:ValidAudience"],
-            expires: DateTime.Now.AddDays(1),
+            expires: expireDate,
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha512)
         );

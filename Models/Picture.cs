@@ -8,4 +8,5 @@ public class Picture
     public string FileName { get; set; }
     
     public UserPost? UserPost { get; set; }
+    public Comment? Comment { get; set; }
 }

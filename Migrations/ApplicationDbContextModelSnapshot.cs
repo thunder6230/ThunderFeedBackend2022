@@ -90,6 +90,9 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -105,6 +108,8 @@ namespace Backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
 
                     b.HasIndex("UserId");
 
@@ -257,6 +262,10 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Picture", b =>
                 {
+                    b.HasOne("Backend.Models.Comment", "Comment")
+                        .WithMany("Pictures")
+                        .HasForeignKey("CommentId");
+
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany("Pictures")
                         .HasForeignKey("UserId")
@@ -266,6 +275,8 @@ namespace Backend.Migrations
                     b.HasOne("Backend.Models.UserPost", "UserPost")
                         .WithMany("Pictures")
                         .HasForeignKey("UserPostId");
+
+                    b.Navigation("Comment");
 
                     b.Navigation("User");
 
@@ -305,6 +316,8 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.Comment", b =>
                 {
                     b.Navigation("Likes");
+
+                    b.Navigation("Pictures");
 
                     b.Navigation("Replies");
                 });
