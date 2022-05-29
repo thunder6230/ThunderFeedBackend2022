@@ -63,6 +63,7 @@ public class CommentController : Controller
                 .Include(c => c.Replies)
                 .Include(c => c.Likes)
                 .Include(c => c.Pictures)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync();
             if (newComment == null) return BadRequest("Post could not be created");
             Pictures = await SaveImages(formCollection.Files, user, newComment);

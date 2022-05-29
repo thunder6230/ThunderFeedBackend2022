@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Backend.Migrations
 {
-    public partial class CreateInit : Migration
+    public partial class UpdateMigrationStatus : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -71,7 +71,8 @@ namespace Backend.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     UserPostId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,17 +98,62 @@ namespace Backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     ImgPath = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserPostId = table.Column<int>(type: "int", nullable: false)
+                    FileName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserPostId = table.Column<int>(type: "int", nullable: true),
+                    CommentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pictures", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Pictures_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Pictures_UserPosts_UserPostId",
                         column: x => x.UserPostId,
                         principalTable: "UserPosts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Pictures_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Replies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Body = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CommentId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Replies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Replies_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Replies_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -120,8 +166,9 @@ namespace Backend.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    UserPostId = table.Column<int>(type: "int", nullable: false),
-                    CommentId = table.Column<int>(type: "int", nullable: false),
+                    UserPostId = table.Column<int>(type: "int", nullable: true),
+                    CommentId = table.Column<int>(type: "int", nullable: true),
+                    ReplyId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -131,14 +178,17 @@ namespace Backend.Migrations
                         name: "FK_Likes_Comments_CommentId",
                         column: x => x.CommentId,
                         principalTable: "Comments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Likes_Replies_ReplyId",
+                        column: x => x.ReplyId,
+                        principalTable: "Replies",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Likes_UserPosts_UserPostId",
                         column: x => x.UserPostId,
                         principalTable: "UserPosts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Likes_Users_UserId",
                         column: x => x.UserId,
@@ -164,6 +214,11 @@ namespace Backend.Migrations
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Likes_ReplyId",
+                table: "Likes",
+                column: "ReplyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Likes_UserId",
                 table: "Likes",
                 column: "UserId");
@@ -174,9 +229,29 @@ namespace Backend.Migrations
                 column: "UserPostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pictures_CommentId",
+                table: "Pictures",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pictures_UserId",
+                table: "Pictures",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Pictures_UserPostId",
                 table: "Pictures",
                 column: "UserPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Replies_CommentId",
+                table: "Replies",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Replies_UserId",
+                table: "Replies",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPosts_UserId",
@@ -191,6 +266,9 @@ namespace Backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Pictures");
+
+            migrationBuilder.DropTable(
+                name: "Replies");
 
             migrationBuilder.DropTable(
                 name: "Comments");
