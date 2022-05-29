@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220520115026_AddLikesToUserTable")]
-    partial class AddLikesToUserTable
+    [Migration("20220529174104_UpdateMigrationStatus")]
+    partial class UpdateMigrationStatus
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,6 +32,9 @@ namespace Backend.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("UserId")
@@ -55,21 +58,26 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CommentId")
+                    b.Property<int?>("CommentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("ReplyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserPostId")
+                    b.Property<int?>("UserPostId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CommentId");
+
+                    b.HasIndex("ReplyId");
 
                     b.HasIndex("UserId");
 
@@ -84,18 +92,63 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("ImgPath")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UserPostId")
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserPostId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
                     b.HasIndex("UserPostId");
 
                     b.ToTable("Pictures");
+                });
+
+            modelBuilder.Entity("Backend.Models.Reply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
@@ -184,9 +237,11 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.Comment", "Comment")
                         .WithMany("Likes")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("Backend.Models.Reply", "Reply")
+                        .WithMany("Likes")
+                        .HasForeignKey("ReplyId");
 
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany("Likes")
@@ -196,11 +251,11 @@ namespace Backend.Migrations
 
                     b.HasOne("Backend.Models.UserPost", "UserPost")
                         .WithMany("Likes")
-                        .HasForeignKey("UserPostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserPostId");
 
                     b.Navigation("Comment");
+
+                    b.Navigation("Reply");
 
                     b.Navigation("User");
 
@@ -209,13 +264,44 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Picture", b =>
                 {
-                    b.HasOne("Backend.Models.UserPost", "UserPost")
-                        .WithMany()
-                        .HasForeignKey("UserPostId")
+                    b.HasOne("Backend.Models.Comment", "Comment")
+                        .WithMany("Pictures")
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("Backend.Models.User", "User")
+                        .WithMany("Pictures")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Backend.Models.UserPost", "UserPost")
+                        .WithMany("Pictures")
+                        .HasForeignKey("UserPostId");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+
                     b.Navigation("UserPost");
+                });
+
+            modelBuilder.Entity("Backend.Models.Reply", b =>
+                {
+                    b.HasOne("Backend.Models.Comment", "Comment")
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Backend.Models.UserPost", b =>
@@ -232,11 +318,22 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.Comment", b =>
                 {
                     b.Navigation("Likes");
+
+                    b.Navigation("Pictures");
+
+                    b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("Backend.Models.Reply", b =>
+                {
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
                 {
                     b.Navigation("Likes");
+
+                    b.Navigation("Pictures");
 
                     b.Navigation("UserPosts");
                 });
@@ -246,6 +343,8 @@ namespace Backend.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
+
+                    b.Navigation("Pictures");
                 });
 #pragma warning restore 612, 618
         }

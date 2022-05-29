@@ -44,6 +44,35 @@ public class UserPostController : ControllerBase
                 .Include(p => p.Comments).ThenInclude(c => c.Likes)
                 .Include(post => post.Likes)
                 .Include(post => post.Pictures)
+                .AsSplitQuery()
+                .OrderByDescending(x => x.CreatedAt).ToListAsync();
+            if (posts.Count == 0) return BadRequest("There are no Posts yet");
+            return Ok(posts);
+        }
+        catch
+        {
+            return BadRequest("Please Log in to see the Content");
+        }
+    }
+    [HttpGet("getUserPosts/{id}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<ICollection<UserPost>>> GetAllUser(int id)
+    {
+        try
+        {
+            ICollection<UserPost> posts = await _context.UserPosts.Where(p => p.User.Id == id)
+                .Include(post => post.User)
+                .Include(post => post.Comments).ThenInclude(c => c.Likes)
+                .Include(post => post.Comments).ThenInclude(c => c.Pictures)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Replies)
+                .ThenInclude(r => r.Likes)
+                .ThenInclude(l => l.User)
+                .Include(p => p.Comments).ThenInclude(c => c.User)
+                .Include(p => p.Comments).ThenInclude(c => c.Likes)
+                .Include(post => post.Likes)
+                .Include(post => post.Pictures)
+                .AsSplitQuery()
                 .OrderByDescending(x => x.CreatedAt).ToListAsync();
             if (posts.Count == 0) return BadRequest("There are no Posts yet");
             return Ok(posts);
@@ -108,6 +137,7 @@ public class UserPostController : ControllerBase
                 .Include(p => p.User)
                 .Include(p => p.Comments)
                 .Include(p => p.Likes)
+                .AsSplitQuery()
                 .FirstOrDefaultAsync();
             if (newPost == null) return BadRequest("Post could not be created");
             Pictures = await SaveImages(formCollection.Files, user, newPost);
