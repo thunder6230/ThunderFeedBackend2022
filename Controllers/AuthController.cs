@@ -12,21 +12,14 @@ namespace Backend.Controllers;
 [ApiController]
 public class AuthController : Controller
 {
-    /*private string _passwordSalt =
-        "0x623B6F16C3B0530BF39CA5D83D0749AD4CAA5EEA2C808CC13AB76D8DF9A2895CBC1AF055B38F648E986462D5392922BF0A55F5496F4305ABFD7C6C2624E6A068";*/
+    
     private readonly ApplicationDbContext _context;
-    // private readonly UserManager<IdentityUser> _userManager;
-    // private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
 
     public AuthController(
-        // UserManager<IdentityUser> userManager,
-        // RoleManager<IdentityRole> roleManager,
         IConfiguration configuration,
         ApplicationDbContext context)
     {
-        // _userManager = userManager;
-        // _roleManager = roleManager;
         _configuration = configuration;
         _context = context;
     }

@@ -1,28 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Andrasko\\Desktop\\ThunderfeedDocker\\Backend\\Backend.csproj": {}
+    "C:\\Users\\thund\\Desktop\\Thunderfeed\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Andrasko\\Desktop\\ThunderfeedDocker\\Backend\\Backend.csproj": {
+    "C:\\Users\\thund\\Desktop\\Thunderfeed\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Andrasko\\Desktop\\ThunderfeedDocker\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\thund\\Desktop\\Thunderfeed\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\Users\\Andrasko\\Desktop\\ThunderfeedDocker\\Backend\\Backend.csproj",
-        "packagesPath": "C:\\Users\\Andrasko\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Andrasko\\Desktop\\ThunderfeedDocker\\Backend\\obj\\",
+        "projectPath": "C:\\Users\\thund\\Desktop\\Thunderfeed\\Backend.csproj",
+        "packagesPath": "C:\\Users\\thund\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\thund\\Desktop\\Thunderfeed\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Andrasko\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\thund\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\NuGet.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/medientank-handels-gmbh/index.json": {}
         },
         "frameworks": {
           "net6.0": {
