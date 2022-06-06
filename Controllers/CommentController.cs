@@ -18,26 +18,26 @@ public class CommentController : Controller
         var posts = await _context.Comments.ToListAsync();
         return Ok(posts);
     }
+
     [HttpGet("Comment/Get/{id}")]
     public async Task<ActionResult<Comment>> Get(int id)
     {
         var comment = await _context.Comments.FindAsync(id);
         return Ok(comment);
     }
+
     [HttpPost("Comment/Post/Add")]
     public async Task<ActionResult<Comment>> AddPostComment(IFormCollection formCollection)
     {
-        List<Picture> Pictures = new List<Picture>();
         if (formCollection.Files.Count != 0)
         {
             var sizeErrors = ValidateFileSize(formCollection.Files);
             if (sizeErrors.Count > 0) return BadRequest(sizeErrors);
             var extensionErrors = ValidateFileExtension(formCollection.Files);
             if (extensionErrors.Count > 0) return BadRequest(extensionErrors);
-
-            // using var image = Image.Load(.File);
-            // return Ok(new { image.Height, image.Width });
+            
         }
+
         var userId = int.Parse(formCollection["UserId"]);
         var postId = int.Parse(formCollection["PostId"]);
         var body = formCollection["Body"];
@@ -48,8 +48,7 @@ public class CommentController : Controller
         //It will be changed to AuthUser
         var userOfComment = await _context.Users.FindAsync(userId);
         if (userOfComment == null) return BadRequest("User not Found");
-        try
-        {
+        
             var comment = new Comment();
             comment.Body = body;
             comment.User = userOfComment;
@@ -57,29 +56,32 @@ public class CommentController : Controller
             comment.UserPost = post;
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
-            var newComment = await _context.Comments.OrderByDescending(c => c.CreatedAt)
-                .Where(c => c.User.Id == userId)
-                .Include(c => c.User)
-                .Include(c => c.Replies)
-                .Include(c => c.Likes)
-                .Include(c => c.Pictures)
-                .AsSplitQuery()
-                .FirstOrDefaultAsync();
-            if (newComment == null) return BadRequest("Post could not be created");
-            Pictures = await SaveImages(formCollection.Files, user, newComment);
             
-            newComment.Pictures = Pictures;
             
-            return Ok(newComment);
-        }
-        catch
-        {
-            return BadRequest("Comment could not be created");
-        }
+            var newComment = _context.Comments.Where(c => c.User.Id == userId).First();
+
+            if (formCollection.Files.Count > 0) await SaveImages(formCollection.Files, user, newComment);
+
+            var newCommentOptimised = _context.Comments.Where(c => c.Id == newComment.Id)
+                .Select(c => new CommentViewModel()
+                {
+                    Id = c.Id,
+                    Body = c.Body,
+                    CreatedAt = c.CreatedAt,
+                    UserPostId = c.UserPost.Id,
+                    Pictures = c.Pictures.Select(pic => new PictureViewModel()),
+                    User = new UserViewModel()
+                    {
+                        Id = c.User.Id, Email = c.User.Email, FirstName = c.User.FirstName, LastName = c.User.LastName
+                    },
+                    Likes = c.Likes.Select(l => new CommentLikeViewModel())
+                }).First();
+
+            return Ok(newCommentOptimised);
+        
     }
 
     [HttpDelete("/Comment/Delete/{id}")]
-
     public async Task<ActionResult<Comment>> DeleteComment(int id)
     {
         var dbComment = await _context.Comments
@@ -90,10 +92,12 @@ public class CommentController : Controller
         await _context.SaveChangesAsync();
         return Ok(dbComment.Id);
     }
+
     [HttpPut("Comment/Update")]
     public async Task<ActionResult<Comment>> UpdatePost([FromBody] UpdateCommentRequest request)
     {
-        var dbComment = await _context.Comments.Where(c => c.Id == request.CommentId).Include(c => c.User).FirstOrDefaultAsync();
+        var dbComment = await _context.Comments.Where(c => c.Id == request.CommentId).Include(c => c.User)
+            .FirstOrDefaultAsync();
         if (dbComment == null) return BadRequest("Comment Not Found");
         if (dbComment.User.Id != request.UserId) return BadRequest("You have no Permission to edit this Comment");
         dbComment.UpdatedAt = DateTime.Now;
@@ -101,7 +105,7 @@ public class CommentController : Controller
         await _context.SaveChangesAsync();
         return Ok(dbComment.Body);
     }
-    
+
     private List<ValidationError> ValidateFileExtension(IFormFileCollection fileCollection)
     {
         var supportedTypes = new[] { "jpg", "bmp", "png", "jpeg" };
@@ -129,7 +133,6 @@ public class CommentController : Controller
         List<ValidationError> ValidationErrors = new List<ValidationError>();
         foreach (var file in fileCollection)
         {
-            var fileExt = Path.GetExtension(file.FileName).Substring(1).ToLower();
             var fileName = file.FileName;
             var errorMessage = "File Size Is InValid - Max Upload Size is 2,5mb";
             if (file.Length > maxAllowedSize)
@@ -154,6 +157,7 @@ public class CommentController : Controller
             {
                 Directory.CreateDirectory(uploadDirectory);
             }
+
             string fileName = file.FileName;
             string extension = Path.GetExtension(fileName);
             string hashedFilename = Guid.NewGuid() + extension;
@@ -171,30 +175,11 @@ public class CommentController : Controller
             picture.Comment = comment;
             pictures.Add(picture);
             _context.Pictures.Add(picture);
-
-
-            /*using (var image = Image.Load(imagePath))
-            {
-                var height = image.Height;
-                var width = image.Width;
-                if (width > 1920)
-                {
-                    var newWidth = 1920;
-                    var newHeight = 0;
-                    image.Mutate(c => c.Resize(newWidth, newHeight));
-                }
-                
-                string webPFileName = Guid.NewGuid().ToString() + ".webp";
-
-                image.Save(new FileStream(webPFileName, FileMode.Create), new WebpEncoder());
-                
-            }*/
-
+            
         }
 
         await _context.SaveChangesAsync();
         var dbPictures = await _context.Pictures.Where(p => p.Comment.Id == comment.Id).ToListAsync();
         return dbPictures;
     }
-
 }

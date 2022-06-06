@@ -23,13 +23,11 @@ public class UserPostController : ControllerBase
     public UserPostController(ApplicationDbContext context)
     {
         _context = context;
-        // _context.ConfigureAwait(false).DisposeAsync();
-        // _context.ChangeTracker();
     }
 
     [HttpGet("getAll")]
     [AllowAnonymous]
-    public async Task<ActionResult<ICollection<UserPost>>> GetAll(int count = 5, int page = 1)
+    public ActionResult<ICollection<UserPost>> GetAll(int count = 5, int page = 1)
     {
         var posts = _context.UserPosts.OrderByDescending(x => x.CreatedAt).Take(20)
             .Select(p => new UserPostViewModel()
@@ -39,6 +37,7 @@ public class UserPostController : ControllerBase
                 {
                     Id = p.User.Id, Email = p.User.Email, FirstName = p.User.FirstName, LastName = p.User.LastName
                 },
+                // UserTo = new UserViewModel(),
                 Body = p.Body,
                 CreatedAt = p.CreatedAt,
                 Likes = p.Likes.Select(l => new PostLikeViewModel()
@@ -49,7 +48,7 @@ public class UserPostController : ControllerBase
                     Body = c.Body,
                     CreatedAt = c.CreatedAt,
                     UserPostId = c.UserPost.Id,
-                    Pictures = c.Pictures.Select(pic => new PictureViewModel(){Id = pic.Id, ImgPath = pic.ImgPath}),
+                    Pictures = c.Pictures.Select(pic => new PictureViewModel() { Id = pic.Id, ImgPath = pic.ImgPath }),
                     User = new UserViewModel()
                     {
                         Id = c.User.Id, Email = c.User.Email, FirstName = c.User.FirstName, LastName = c.User.LastName
@@ -57,59 +56,52 @@ public class UserPostController : ControllerBase
                     Likes = c.Likes.Select(l => new CommentLikeViewModel()
                         { Id = l.Id, UserId = l.User.Id, CommentId = l.Comment.Id })
                 }),
-                Pictures = p.Pictures.Select(pic => new PictureViewModel(){Id = pic.Id, ImgPath = pic.ImgPath})
-            });
+                Pictures = p.Pictures.Select(pic => new PictureViewModel() { Id = pic.Id, ImgPath = pic.ImgPath })
+            }).AsSplitQuery();
 
 
-        /*
-         var posts = _context.UserPosts.OrderByDescending(x => x.CreatedAt).Take(10)
-        .Include(post => post.User)
-        .Include(post => post.Pictures)
-        .Include(post => post.Comments).ThenInclude(c => c.Likes)
-        .Include(post => post.Comments).ThenInclude(c => c.Pictures)
-        .Include(p => p.Comments)
-        .ThenInclude(c => c.Replies)
-        .ThenInclude(r => r.Likes)
-        .ThenInclude(l => l.User)
-        .Include(p => p.Comments).ThenInclude(c => c.User)
-        .Include(p => p.Comments).ThenInclude(c => c.Likes)
-        .AsNoTracking()
-        .AsSplitQuery()
-        .ToList();
-        */
-
-        // if (posts.Count == 0) return BadRequest("There are no Posts yet");
         return Ok(posts);
     }
 
     [HttpGet("getUserPosts/{id}")]
     [AllowAnonymous]
-    public async Task<ActionResult<ICollection<UserPost>>> GetAllUser(int id)
+    public ActionResult<ICollection<UserPost>> GetAllUser(int id)
     {
-        try
-        {
-            ICollection<UserPost> posts = await _context.UserPosts.Where(p => p.User.Id == id)
-                .Include(post => post.User)
-                .Include(post => post.Comments).ThenInclude(c => c.Likes)
-                .Include(post => post.Comments).ThenInclude(c => c.Pictures)
-                .Include(p => p.Comments)
-                .ThenInclude(c => c.Replies)
-                .ThenInclude(r => r.Likes)
-                .ThenInclude(l => l.User)
-                .Include(p => p.Comments).ThenInclude(c => c.User)
-                .Include(p => p.Comments).ThenInclude(c => c.Likes)
-                .Include(post => post.Likes)
-                .Include(post => post.Pictures)
-                .AsSplitQuery()
-                .OrderByDescending(x => x.CreatedAt)
-                .ToListAsync();
-            if (posts.Count == 0) return BadRequest("There are no Posts yet");
+        
+            var posts = _context.UserPosts.Where(p => p.User.Id == id).OrderByDescending(p => p.CreatedAt).Take(20)
+                .Select(p => new UserPostViewModel()
+                {
+                    Id = p.Id,
+                    User = new UserViewModel()
+                    {
+                        Id = p.User.Id, Email = p.User.Email, FirstName = p.User.FirstName, LastName = p.User.LastName
+                    },
+                    UserTo = new UserViewModel(),
+
+                    Body = p.Body,
+                    CreatedAt = p.CreatedAt,
+                    Likes = p.Likes.Select(l => new PostLikeViewModel()
+                        { Id = l.Id, UserId = l.User.Id, UserPostId = l.UserPost.Id }),
+                    Comments = p.Comments.Select(c => new CommentViewModel()
+                    {
+                        Id = c.Id,
+                        Body = c.Body,
+                        CreatedAt = c.CreatedAt,
+                        UserPostId = c.UserPost.Id,
+                        Pictures = c.Pictures.Select(pic => new PictureViewModel
+                            { Id = pic.Id, ImgPath = pic.ImgPath }),
+                        User = new UserViewModel()
+                        {
+                            Id = c.User.Id, Email = c.User.Email, FirstName = c.User.FirstName,
+                            LastName = c.User.LastName
+                        },
+                        Likes = c.Likes.Select(l => new CommentLikeViewModel
+                            { Id = l.Id, UserId = l.User.Id, CommentId = l.Comment.Id })
+                    }),
+                    Pictures = p.Pictures.Select(pic => new PictureViewModel { Id = pic.Id, ImgPath = pic.ImgPath })
+                });
             return Ok(posts);
-        }
-        catch
-        {
-            return BadRequest("Please Log in to see the Content");
-        }
+        
     }
 
 
@@ -126,16 +118,11 @@ public class UserPostController : ControllerBase
         return Ok(userPost);
     }
 
-    /*[HttpPost("AddPost")]
-    public async Task<ActionResult<UserPost>> Post(IFormCollection formCollection)
-    {
-        
-        return Ok(new{form=formCollection, formFiles = formCollection.Files});
-    }*/
+   
     [HttpPost("AddPost")]
     public async Task<ActionResult<UserPost>> Post(IFormCollection formCollection)
     {
-        List<Picture> Pictures = new List<Picture>();
+        
         if (formCollection.Files.Count != 0)
         {
             var sizeErrors = ValidateFileSize(formCollection.Files);
@@ -143,37 +130,49 @@ public class UserPostController : ControllerBase
             var extensionErrors = ValidateFileExtension(formCollection.Files);
             if (extensionErrors.Count > 0) return BadRequest(extensionErrors);
 
-            // using var image = Image.Load(.File);
-            // return Ok(new { image.Height, image.Width });
         }
 
         var userId = int.Parse(formCollection["UserId"]);
+        var userToId = int.Parse(formCollection["UserToId"]);
         var body = formCollection["Body"];
-        var user = await _context.Users.FindAsync(userId);
+
+        var user = _context.Users.First(u => u.Id == userId);
         if (user == null) return BadRequest("User Not Found");
+        var userTo = _context.Users.First(u => u.Id == userId);
+        if (userTo == null) return BadRequest("User Not Found");
 
         var userPost = new UserPost();
         userPost.User = user;
+        if (userToId > 0) userPost.UserToId = userToId;
         userPost.Body = body;
         userPost.CreatedAt = DateTime.Now;
 
         _context.UserPosts.Add(userPost);
         await _context.SaveChangesAsync();
+        var newPost = _context.UserPosts.Where(p => p.User.Id == userId).OrderByDescending(p => p.CreatedAt).First();
 
 
-        var newPost = await _context.UserPosts.OrderByDescending(p => p.CreatedAt)
-            .Where(p => p.User.Id == userId)
-            .Include(p => p.User)
-            .Include(p => p.Comments)
-            .Include(p => p.Likes)
-            .AsSplitQuery()
-            .FirstOrDefaultAsync();
+        if (formCollection.Files.Count > 0) await SaveImages(formCollection.Files, user, newPost);
+
+
+        var newPostOptimised = _context.UserPosts.Where(p => p.Id == newPost.Id).Select(p => new UserPostViewModel()
+        {
+            Id = p.Id,
+            User = new UserViewModel()
+            {
+                Id = p.User.Id, Email = p.User.Email, FirstName = p.User.FirstName, LastName = p.User.LastName
+            },
+            UserTo = new UserViewModel(),
+            Body = p.Body,
+            CreatedAt = p.CreatedAt,
+            Likes = p.Likes.Select(l => new PostLikeViewModel()),
+            Comments = p.Comments.Select(c => new CommentViewModel()),
+
+            Pictures = p.Pictures.Select(pic => new PictureViewModel() { Id = pic.Id, ImgPath = pic.ImgPath })
+        }).First();
         if (newPost == null) return BadRequest("Post could not be created");
-        Pictures = await SaveImages(formCollection.Files, user, newPost);
 
-        userPost.Pictures = Pictures;
-
-        return Ok(newPost);
+        return Ok(newPostOptimised);
     }
 
     [HttpPut("UpdatePost")]
@@ -231,7 +230,6 @@ public class UserPostController : ControllerBase
         List<ValidationError> ValidationErrors = new List<ValidationError>();
         foreach (var file in fileCollection)
         {
-            var fileExt = Path.GetExtension(file.FileName).Substring(1).ToLower();
             var fileName = file.FileName;
             var errorMessage = "File Size Is InValid - Max Upload Size is 2,5mb";
             if (file.Length > maxAllowedSize)
@@ -276,22 +274,6 @@ public class UserPostController : ControllerBase
             _context.Pictures.Add(picture);
 
 
-            /*using (var image = Image.Load(imagePath))
-            {
-                var height = image.Height;
-                var width = image.Width;
-                if (width > 1920)
-                {
-                    var newWidth = 1920;
-                    var newHeight = 0;
-                    image.Mutate(c => c.Resize(newWidth, newHeight));
-                }
-                
-                string webPFileName = Guid.NewGuid().ToString() + ".webp";
-
-                image.Save(new FileStream(webPFileName, FileMode.Create), new WebpEncoder());
-                
-            }*/
         }
 
         await _context.SaveChangesAsync();
