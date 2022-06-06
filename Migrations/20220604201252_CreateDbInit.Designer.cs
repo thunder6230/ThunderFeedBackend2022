@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220529174104_UpdateMigrationStatus")]
-    partial class UpdateMigrationStatus
+    [Migration("20220604201252_CreateDbInit")]
+    partial class CreateDbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -178,6 +178,9 @@ namespace Backend.Migrations
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("RefreshToken")
                         .HasColumnType("longblob");
 
                     b.Property<byte[]>("RememberMe")
