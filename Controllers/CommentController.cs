@@ -72,7 +72,7 @@ public class CommentController : Controller
                     Pictures = c.Pictures.Select(pic => new PictureViewModel()),
                     User = new UserViewModel()
                     {
-                        Id = c.User.Id, Email = c.User.Email, FirstName = c.User.FirstName, LastName = c.User.LastName
+                        Id = c.User.Id, FirstName = c.User.FirstName, LastName = c.User.LastName
                     },
                     Likes = c.Likes.Select(l => new CommentLikeViewModel())
                 }).First();

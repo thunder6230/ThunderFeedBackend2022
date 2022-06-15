@@ -26,7 +26,7 @@ public class UserPostViewModel
     public string Body { get; set; } = string.Empty;
 
     public UserViewModel User { get; set; }
-    public UserViewModel UserTo { get; set; }
+    public UserViewModel? UserTo { get; set; }
     public IEnumerable<PostLikeViewModel> Likes { get; set; }
     public IEnumerable<CommentViewModel> Comments { get; set; }
     public IEnumerable<PictureViewModel> Pictures { get; set; }

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using Google.Protobuf.WellKnownTypes;
 
 namespace Backend.Models;
 
@@ -32,8 +33,8 @@ public class User
 
 public class UserViewModel
 {
-    public int Id { get; set; }
-    public string Email { get; set; } = string.Empty;
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
+    public int? Id { get; set; }
+    // public string Email { get; set; } = string.Empty;
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
 }

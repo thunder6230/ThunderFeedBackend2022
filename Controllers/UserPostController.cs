@@ -35,9 +35,12 @@ public class UserPostController : ControllerBase
                 Id = p.Id,
                 User = new UserViewModel()
                 {
-                    Id = p.User.Id, Email = p.User.Email, FirstName = p.User.FirstName, LastName = p.User.LastName
+                    Id = p.User.Id, FirstName = p.User.FirstName, LastName = p.User.LastName
                 },
-                // UserTo = new UserViewModel(),
+                UserTo = new UserViewModel()
+                {
+                    Id = p.UserToId,
+                },
                 Body = p.Body,
                 CreatedAt = p.CreatedAt,
                 Likes = p.Likes.Select(l => new PostLikeViewModel()
@@ -51,14 +54,28 @@ public class UserPostController : ControllerBase
                     Pictures = c.Pictures.Select(pic => new PictureViewModel() { Id = pic.Id, ImgPath = pic.ImgPath }),
                     User = new UserViewModel()
                     {
-                        Id = c.User.Id, Email = c.User.Email, FirstName = c.User.FirstName, LastName = c.User.LastName
+                        Id = c.User.Id, FirstName = c.User.FirstName, LastName = c.User.LastName
                     },
                     Likes = c.Likes.Select(l => new CommentLikeViewModel()
                         { Id = l.Id, UserId = l.User.Id, CommentId = l.Comment.Id })
                 }),
                 Pictures = p.Pictures.Select(pic => new PictureViewModel() { Id = pic.Id, ImgPath = pic.ImgPath })
             }).AsSplitQuery();
-
+        
+        foreach (var post in posts)
+        {
+            if (post.UserTo.Id != null)
+            {
+                var u = _context.Users.First(u => u.Id == post.UserTo.Id);
+                post.UserTo.FirstName = u.FirstName;
+                post.UserTo.LastName = u.LastName;
+            }
+            else
+            {
+                post.UserTo = null;
+            }
+        }
+            
 
         return Ok(posts);
     }
@@ -74,7 +91,7 @@ public class UserPostController : ControllerBase
                     Id = p.Id,
                     User = new UserViewModel()
                     {
-                        Id = p.User.Id, Email = p.User.Email, FirstName = p.User.FirstName, LastName = p.User.LastName
+                        Id = p.User.Id, FirstName = p.User.FirstName, LastName = p.User.LastName
                     },
                     UserTo = new UserViewModel(),
 
@@ -92,7 +109,7 @@ public class UserPostController : ControllerBase
                             { Id = pic.Id, ImgPath = pic.ImgPath }),
                         User = new UserViewModel()
                         {
-                            Id = c.User.Id, Email = c.User.Email, FirstName = c.User.FirstName,
+                            Id = c.User.Id, FirstName = c.User.FirstName,
                             LastName = c.User.LastName
                         },
                         Likes = c.Likes.Select(l => new CommentLikeViewModel
@@ -138,7 +155,7 @@ public class UserPostController : ControllerBase
 
         var user = _context.Users.First(u => u.Id == userId);
         if (user == null) return BadRequest("User Not Found");
-        var userTo = _context.Users.First(u => u.Id == userId);
+        var userTo = _context.Users.First(u => u.Id == userToId);
         if (userTo == null) return BadRequest("User Not Found");
 
         var userPost = new UserPost();
@@ -146,6 +163,7 @@ public class UserPostController : ControllerBase
         if (userToId > 0) userPost.UserToId = userToId;
         userPost.Body = body;
         userPost.CreatedAt = DateTime.Now;
+        userPost.UserToId = userToId;
 
         _context.UserPosts.Add(userPost);
         await _context.SaveChangesAsync();
@@ -154,15 +172,17 @@ public class UserPostController : ControllerBase
 
         if (formCollection.Files.Count > 0) await SaveImages(formCollection.Files, user, newPost);
 
-
         var newPostOptimised = _context.UserPosts.Where(p => p.Id == newPost.Id).Select(p => new UserPostViewModel()
         {
             Id = p.Id,
             User = new UserViewModel()
             {
-                Id = p.User.Id, Email = p.User.Email, FirstName = p.User.FirstName, LastName = p.User.LastName
+                Id = p.User.Id, FirstName = p.User.FirstName, LastName = p.User.LastName
             },
-            UserTo = new UserViewModel(),
+            UserTo = new UserViewModel()
+            {
+                Id = userTo.Id, FirstName = userTo.FirstName, LastName = userTo.LastName
+            },
             Body = p.Body,
             CreatedAt = p.CreatedAt,
             Likes = p.Likes.Select(l => new PostLikeViewModel()),

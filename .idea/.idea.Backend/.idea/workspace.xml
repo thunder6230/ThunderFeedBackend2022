@@ -7,15 +7,15 @@
     <projectFile profileName="WebBackend">Backend.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f445e06d-6462-44ae-8b7d-ac6f7c5c18ba" name="Changes" comment="async db get queries =&gt; with new Dataset classes&#10;much faster!">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="f445e06d-6462-44ae-8b7d-ac6f7c5c18ba" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Models/Notification.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Backend/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/CommentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/CommentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/LikeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/LikeController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/UserPostController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/UserPostController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/User.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/UserPost.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/UserPost.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/Backend.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ref/Backend.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ref/Backend.dll" afterDir="false" />
@@ -39,12 +39,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/198a6261cebc324728dcc4c178edc5f2894123f711722c80e8557cbfd27651/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/575c31ecc35a636b6f962cb71d53992552941a18982aae1c8e6c16305cc3761b/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/664ec06dfe9e907a2e8e36384a8df7f162a6ff658fe1c344c172d92a15e134df/PhysicalFileProvider.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d9d9faea5e6ed6438a777ef8c6eed41261f81d8e86488ed923ad92564f54e/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fcf8a632bf29ee1c9ceeba6881d34e365d858f8f117f62861291dcdb2f1f93/ModelValidator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thund/Desktop/Thunderfeed/Controllers/CommentController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thund/Desktop/Thunderfeed/Controllers/LikeController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thund/Desktop/Thunderfeed/Controllers/UserPostController.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Controllers/WeatherForecastController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thund/Desktop/Thunderfeed/Models/UserPost.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/appsettings.json" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -60,25 +57,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "com.github.minasploit.migrationfacilitator.data_project": "Backend",
-    "com.github.minasploit.migrationfacilitator.startup_project": "Backend",
-    "database.data.extractors.current.export.id": "SQL Inserts",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.github.minasploit.migrationfacilitator.data_project&quot;: &quot;Backend&quot;,
+    &quot;com.github.minasploit.migrationfacilitator.startup_project&quot;: &quot;Backend&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;SQL Inserts&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Backend">
     <configuration name="Backend" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Backend.csproj" />
@@ -137,6 +134,11 @@
       <workItem from="1653898420403" duration="5538000" />
       <workItem from="1654337007302" duration="990000" />
       <workItem from="1654361038918" duration="32909000" />
+      <workItem from="1654770255864" duration="604000" />
+      <workItem from="1655007795811" duration="711000" />
+      <workItem from="1655094968400" duration="5035000" />
+      <workItem from="1655140094906" duration="5412000" />
+      <workItem from="1655270441422" duration="553000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1653108035761</created>
@@ -166,7 +168,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653327296154</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="async db get queries =&gt; with new Dataset classes&#10;much faster!">
+      <created>1654545835899</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1654545835899</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,6 +202,25 @@
     <MESSAGE value="migrations" />
     <MESSAGE value="async db get queries =&gt; with new Dataset classes&#10;much faster!" />
     <option name="LAST_COMMIT_MESSAGE" value="async db get queries =&gt; with new Dataset classes&#10;much faster!" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Controllers/UserPostController.cs</url>
+          <line>79</line>
+          <properties documentPath="C:\Users\thund\Desktop\Thunderfeed\Controllers\UserPostController.cs" initialLine="84" containingFunctionPresentation="method 'GetAll'">
+            <startOffsets>
+              <option value="2779" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2796" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XPathView.XPathProjectComponent">
     <history />
