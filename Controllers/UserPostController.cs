@@ -40,6 +40,8 @@ public class UserPostController : ControllerBase
                 UserTo = new UserViewModel()
                 {
                     Id = p.UserToId,
+                    FirstName = "",
+                    LastName = ""
                 },
                 Body = p.Body,
                 CreatedAt = p.CreatedAt,
@@ -60,21 +62,40 @@ public class UserPostController : ControllerBase
                         { Id = l.Id, UserId = l.User.Id, CommentId = l.Comment.Id })
                 }),
                 Pictures = p.Pictures.Select(pic => new PictureViewModel() { Id = pic.Id, ImgPath = pic.ImgPath })
-            }).AsSplitQuery();
-        
-        foreach (var post in posts)
-        {
-            if (post.UserTo.Id != null)
+                
+            }).AsSplitQuery().ForEach(p =>
             {
-                var u = _context.Users.First(u => u.Id == post.UserTo.Id);
-                post.UserTo.FirstName = u.FirstName;
-                post.UserTo.LastName = u.LastName;
-            }
-            else
-            {
-                post.UserTo = null;
-            }
-        }
+                if (p.UserTo.Id != null)
+                {
+                    var u = _context.Users.First(u => u.Id == p.UserTo.Id);
+                    UserViewModel userTo = new UserViewModel()
+                    {
+                        Id = u.Id,
+                        FirstName = u.FirstName,
+                        LastName = u.LastName
+                    };
+                    p.UserTo = userTo;
+                }
+            });
+
+        // foreach (var post in posts)
+        // {
+        //     if (post.UserTo.Id != null)
+        //     {
+        //         var u = _context.Users.First(u => u.Id == post.UserTo.Id);
+        //         UserViewModel userTo = new UserViewModel()
+        //         {
+        //             Id = u.Id,
+        //             FirstName = u.FirstName,
+        //             LastName = u.LastName
+        //         };
+        //         post.UserTo = userTo;
+        //
+        //     }
+        //
+        // }
+
+        var newPosts = posts;
             
 
         return Ok(posts);
