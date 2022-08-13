@@ -22,5 +22,12 @@
       <jdbc-url>jdbc:mysql://localhost:4000/thunderfeed</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="thunderfeed@localhost" uuid="6e98f83e-adbf-4b95-acfe-5d312a693e29">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://localhost:4000/thunderfeed</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

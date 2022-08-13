@@ -49,35 +49,24 @@ public class CommentController : Controller
         var userOfComment = await _context.Users.FindAsync(userId);
         if (userOfComment == null) return BadRequest("User not Found");
         
-            var comment = new Comment();
-            comment.Body = body;
-            comment.User = userOfComment;
-            comment.CreatedAt = DateTime.Now;
-            comment.UserPost = post;
-            _context.Comments.Add(comment);
+            var newComment = new Comment();
+            newComment.Body = body;
+            newComment.User = userOfComment;
+            newComment.CreatedAt = DateTime.Now;
+            newComment.UserPost = post;
+            _context.Comments.Add(newComment);
             await _context.SaveChangesAsync();
             
             
-            var newComment = _context.Comments.Where(c => c.User.Id == userId).First();
+            var newCommentDb = _context.Comments.OrderByDescending(c => c.CreatedAt).First(c => c.User.Id == userId);
 
             if (formCollection.Files.Count > 0) await SaveImages(formCollection.Files, user, newComment);
 
-            var newCommentOptimised = _context.Comments.Where(c => c.Id == newComment.Id)
-                .Select(c => new CommentViewModel()
-                {
-                    Id = c.Id,
-                    Body = c.Body,
-                    CreatedAt = c.CreatedAt,
-                    UserPostId = c.UserPost.Id,
-                    Pictures = c.Pictures.Select(pic => new PictureViewModel()),
-                    User = new UserViewModel()
-                    {
-                        Id = c.User.Id, FirstName = c.User.FirstName, LastName = c.User.LastName
-                    },
-                    Likes = c.Likes.Select(l => new CommentLikeViewModel())
-                }).First();
-
-            return Ok(newCommentOptimised);
+            var viewComment = _context.Comments
+                .Where(c => c.Id == newCommentDb.Id)
+                .Select(comment => new CommentViewModel(comment, user)).First();
+           
+            return Ok(viewComment);
         
     }
 

@@ -31,7 +31,23 @@
 
     <ItemGroup>
       <Folder Include="Migrations" />
-      <Folder Include="Models\Response" />
+      <Folder Include="Models\Notifications" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Models\Response\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Models\Response\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Models\Response\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Models\Response\**" />
     </ItemGroup>
 
 </Project>

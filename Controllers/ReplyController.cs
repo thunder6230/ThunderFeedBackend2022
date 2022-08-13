@@ -19,7 +19,7 @@ public class ReplyController : Controller
         return Ok(reply);
     }
     [HttpPost("Reply/Add")]
-    public async Task<ActionResult<Reply>> AddPostReply([FromBody] AddReplyModel request)
+    public async Task<ActionResult<Reply>> AddCommentReply([FromBody] AddReplyModel request)
     {
         var comment = await _context.Comments.FindAsync(request.CommentId);
         if (comment == null) return BadRequest("Post not Found");
@@ -39,6 +39,12 @@ public class ReplyController : Controller
                 .Include(r => r.Comment)
                 .Include(r => r.Likes)
                 .OrderByDescending(r => r.CreatedAt).FirstOrDefaultAsync();
+            if (newReply.User.Id != userOfReply.Id)
+            {
+                // var notification = new CommentReplyNotification(newReply.User,userOfReply.Id,  commentnewReply, );
+                // _context.Notifications.Add(notification);
+                // await _context.SaveChangesAsync();
+            }
             return Ok(newReply);
         
     }

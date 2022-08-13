@@ -15,6 +15,11 @@ public class Picture
 public class PictureViewModel
 {
     public int Id { get; set; }
-    public int UserId { get; set; }
     public string ImgPath { get; set; }
+
+    public PictureViewModel(Picture picture)
+    {
+        Id = picture.Id;
+        ImgPath = picture.ImgPath;
+    }
 }

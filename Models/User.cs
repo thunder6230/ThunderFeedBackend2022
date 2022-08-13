@@ -29,12 +29,25 @@ public class User
     public string Gender { get; set; } = string.Empty;
 }
 
-
-
 public class UserViewModel
 {
-    public int? Id { get; set; }
-    // public string Email { get; set; } = string.Empty;
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
+    public int Id { get; set; }
+    
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    
+  
+    public  UserViewModel( int? id, string firstName, string lastName)
+    {
+        if (id == null)
+        {
+            return;
+        }
+
+        this.Id = (int)id;
+        this.FirstName = firstName;
+        this.LastName = lastName;
+    }
+  
+
 }

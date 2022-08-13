@@ -29,131 +29,40 @@ public class UserPostController : ControllerBase
     [AllowAnonymous]
     public ActionResult<ICollection<UserPost>> GetAll(int count = 5, int page = 1)
     {
-        var posts = _context.UserPosts.OrderByDescending(x => x.CreatedAt).Take(20)
-            .Select(p => new UserPostViewModel()
-            {
-                Id = p.Id,
-                User = new UserViewModel()
-                {
-                    Id = p.User.Id, FirstName = p.User.FirstName, LastName = p.User.LastName
-                },
-                UserTo = new UserViewModel()
-                {
-                    Id = p.UserToId,
-                    FirstName = "",
-                    LastName = ""
-                },
-                Body = p.Body,
-                CreatedAt = p.CreatedAt,
-                Likes = p.Likes.Select(l => new PostLikeViewModel()
-                    { Id = l.Id, UserId = l.User.Id, UserPostId = l.UserPost.Id }),
-                Comments = p.Comments.Select(c => new CommentViewModel()
-                {
-                    Id = c.Id,
-                    Body = c.Body,
-                    CreatedAt = c.CreatedAt,
-                    UserPostId = c.UserPost.Id,
-                    Pictures = c.Pictures.Select(pic => new PictureViewModel() { Id = pic.Id, ImgPath = pic.ImgPath }),
-                    User = new UserViewModel()
-                    {
-                        Id = c.User.Id, FirstName = c.User.FirstName, LastName = c.User.LastName
-                    },
-                    Likes = c.Likes.Select(l => new CommentLikeViewModel()
-                        { Id = l.Id, UserId = l.User.Id, CommentId = l.Comment.Id })
-                }),
-                Pictures = p.Pictures.Select(pic => new PictureViewModel() { Id = pic.Id, ImgPath = pic.ImgPath })
-                
-            }).AsSplitQuery().ForEach(p =>
-            {
-                if (p.UserTo.Id != null)
-                {
-                    var u = _context.Users.First(u => u.Id == p.UserTo.Id);
-                    UserViewModel userTo = new UserViewModel()
-                    {
-                        Id = u.Id,
-                        FirstName = u.FirstName,
-                        LastName = u.LastName
-                    };
-                    p.UserTo = userTo;
-                }
-            });
+        var posts = _context.UserPosts.OrderByDescending(x => x.CreatedAt)
+            .Include(p => p.Comments)
+            .Include(p => p.Likes)
+            .Include(p => p.Pictures)
+            .Include(p => p.User)
+            .Take(count).Skip(count * (page - 1)).ToList();
 
-        // foreach (var post in posts)
-        // {
-        //     if (post.UserTo.Id != null)
-        //     {
-        //         var u = _context.Users.First(u => u.Id == post.UserTo.Id);
-        //         UserViewModel userTo = new UserViewModel()
-        //         {
-        //             Id = u.Id,
-        //             FirstName = u.FirstName,
-        //             LastName = u.LastName
-        //         };
-        //         post.UserTo = userTo;
-        //
-        //     }
-        //
-        // }
+        var viewPosts = GetViewPosts(posts);
 
-        var newPosts = posts;
-            
-
-        return Ok(posts);
+        return Ok(viewPosts);
     }
 
     [HttpGet("getUserPosts/{id}")]
     [AllowAnonymous]
     public ActionResult<ICollection<UserPost>> GetAllUser(int id)
     {
-        
-            var posts = _context.UserPosts.Where(p => p.User.Id == id).OrderByDescending(p => p.CreatedAt).Take(20)
-                .Select(p => new UserPostViewModel()
-                {
-                    Id = p.Id,
-                    User = new UserViewModel()
-                    {
-                        Id = p.User.Id, FirstName = p.User.FirstName, LastName = p.User.LastName
-                    },
-                    UserTo = new UserViewModel(),
 
-                    Body = p.Body,
-                    CreatedAt = p.CreatedAt,
-                    Likes = p.Likes.Select(l => new PostLikeViewModel()
-                        { Id = l.Id, UserId = l.User.Id, UserPostId = l.UserPost.Id }),
-                    Comments = p.Comments.Select(c => new CommentViewModel()
-                    {
-                        Id = c.Id,
-                        Body = c.Body,
-                        CreatedAt = c.CreatedAt,
-                        UserPostId = c.UserPost.Id,
-                        Pictures = c.Pictures.Select(pic => new PictureViewModel
-                            { Id = pic.Id, ImgPath = pic.ImgPath }),
-                        User = new UserViewModel()
-                        {
-                            Id = c.User.Id, FirstName = c.User.FirstName,
-                            LastName = c.User.LastName
-                        },
-                        Likes = c.Likes.Select(l => new CommentLikeViewModel
-                            { Id = l.Id, UserId = l.User.Id, CommentId = l.Comment.Id })
-                    }),
-                    Pictures = p.Pictures.Select(pic => new PictureViewModel { Id = pic.Id, ImgPath = pic.ImgPath })
-                });
-            return Ok(posts);
+        var posts = _context.UserPosts.Where(p => p.User.Id == id || p.UserToId == id)
+            .OrderByDescending(p => p.CreatedAt).Take(20).ToList();
+            var viewPosts = GetViewPosts(posts);
+
+            return Ok(viewPosts);
         
     }
 
 
     [HttpGet("getPost/{id}")]
     [AllowAnonymous]
-    public async Task<ActionResult<UserPost>> Get(int id)
+    public ActionResult<UserPost> Get(int id)
     {
-        var userPost = await _context.UserPosts.Where(p => p.Id == id)
-            .Include(post => post.Likes)
-            .Include(post => post.User)
-            .Include(post => post.Comments)
-            .FirstOrDefaultAsync();
-        if (userPost == null) return BadRequest("Post Not Found");
-        return Ok(userPost);
+        var post = _context.UserPosts.Where(p => p.Id == id).First();
+        var viewPost = new UserPostViewModel(post, _context);
+
+        return Ok(viewPost);
     }
 
    
@@ -171,20 +80,22 @@ public class UserPostController : ControllerBase
         }
 
         var userId = int.Parse(formCollection["UserId"]);
-        var userToId = int.Parse(formCollection["UserToId"]);
+        bool hasUserTo = formCollection.ContainsKey("UserToId");
+        int userToId = -1;
+        User userTo = new User();
+        if(hasUserTo) userToId = int.Parse(formCollection["UserToId"]);
         var body = formCollection["Body"];
 
         var user = _context.Users.First(u => u.Id == userId);
         if (user == null) return BadRequest("User Not Found");
-        var userTo = _context.Users.First(u => u.Id == userToId);
-        if (userTo == null) return BadRequest("User Not Found");
+        if(hasUserTo && userToId > -1) userTo = _context.Users.First(u => u.Id == userToId);
+        // if (userTo == null) return BadRequest("User Not Found");
 
         var userPost = new UserPost();
         userPost.User = user;
-        if (userToId > 0) userPost.UserToId = userToId;
+        if(hasUserTo) userPost.UserToId = userToId;
         userPost.Body = body;
         userPost.CreatedAt = DateTime.Now;
-        userPost.UserToId = userToId;
 
         _context.UserPosts.Add(userPost);
         await _context.SaveChangesAsync();
@@ -193,27 +104,18 @@ public class UserPostController : ControllerBase
 
         if (formCollection.Files.Count > 0) await SaveImages(formCollection.Files, user, newPost);
 
-        var newPostOptimised = _context.UserPosts.Where(p => p.Id == newPost.Id).Select(p => new UserPostViewModel()
+        var post = new UserPostViewModel(newPost, _context);
+        
+       
+        if (hasUserTo)
         {
-            Id = p.Id,
-            User = new UserViewModel()
-            {
-                Id = p.User.Id, FirstName = p.User.FirstName, LastName = p.User.LastName
-            },
-            UserTo = new UserViewModel()
-            {
-                Id = userTo.Id, FirstName = userTo.FirstName, LastName = userTo.LastName
-            },
-            Body = p.Body,
-            CreatedAt = p.CreatedAt,
-            Likes = p.Likes.Select(l => new PostLikeViewModel()),
-            Comments = p.Comments.Select(c => new CommentViewModel()),
-
-            Pictures = p.Pictures.Select(pic => new PictureViewModel() { Id = pic.Id, ImgPath = pic.ImgPath })
-        }).First();
+            var notification = new PostToUserNotification( userTo,user.Id, newPost);
+            _context.Notifications.Add(notification);
+            await _context.SaveChangesAsync();
+        }
         if (newPost == null) return BadRequest("Post could not be created");
 
-        return Ok(newPostOptimised);
+        return Ok(post);
     }
 
     [HttpPut("UpdatePost")]
@@ -321,4 +223,16 @@ public class UserPostController : ControllerBase
         var dbPictures = await _context.Pictures.Where(p => p.UserPost.Id == post.Id).ToListAsync();
         return dbPictures;
     }
+
+    private List<UserPostViewModel> GetViewPosts(List<UserPost> posts)
+    {
+        var viewPosts = new List<UserPostViewModel>();
+        foreach (var post in posts)
+        {
+            viewPosts.Add(new UserPostViewModel(post, _context));
+        }
+
+        return viewPosts;
+    }
+
 }

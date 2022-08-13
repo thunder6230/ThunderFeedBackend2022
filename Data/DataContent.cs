@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Options;
+
 namespace Backend.Data;
 
 public class ApplicationDbContext : DbContext
@@ -12,4 +15,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Picture> Pictures { get; set; }
     public DbSet<Reply> Replies { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
+    
 }

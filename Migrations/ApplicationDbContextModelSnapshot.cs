@@ -32,7 +32,7 @@ namespace Backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("UserId")
@@ -62,7 +62,56 @@ namespace Backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("PictureId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ReplyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserPostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("PictureId");
+
+                    b.HasIndex("ReplyId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserPostId");
+
+                    b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("Backend.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsUnread")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int?>("ReplyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserFromId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -81,7 +130,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("UserPostId");
 
-                    b.ToTable("Likes");
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Backend.Models.Picture", b =>
@@ -134,7 +183,7 @@ namespace Backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("UserId")
@@ -207,7 +256,7 @@ namespace Backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("UserId")
@@ -248,6 +297,10 @@ namespace Backend.Migrations
                         .WithMany("Likes")
                         .HasForeignKey("CommentId");
 
+                    b.HasOne("Backend.Models.Picture", "Picture")
+                        .WithMany()
+                        .HasForeignKey("PictureId");
+
                     b.HasOne("Backend.Models.Reply", "Reply")
                         .WithMany("Likes")
                         .HasForeignKey("ReplyId");
@@ -260,6 +313,37 @@ namespace Backend.Migrations
 
                     b.HasOne("Backend.Models.UserPost", "UserPost")
                         .WithMany("Likes")
+                        .HasForeignKey("UserPostId");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("Picture");
+
+                    b.Navigation("Reply");
+
+                    b.Navigation("User");
+
+                    b.Navigation("UserPost");
+                });
+
+            modelBuilder.Entity("Backend.Models.Notification", b =>
+                {
+                    b.HasOne("Backend.Models.Comment", "Comment")
+                        .WithMany()
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("Backend.Models.Reply", "Reply")
+                        .WithMany()
+                        .HasForeignKey("ReplyId");
+
+                    b.HasOne("Backend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.UserPost", "UserPost")
+                        .WithMany()
                         .HasForeignKey("UserPostId");
 
                     b.Navigation("Comment");
